@@ -17,39 +17,41 @@ const baseStyle = {
     outline: 'none',
     transition: 'border .24s ease-in-out',
     cursor: 'pointer'
-  };
-  
-  const focusedStyle = {
+};
+
+const focusedStyle = {
     borderColor: '#2196f3'
-  };
-  
-  const acceptStyle = {
+};
+
+const acceptStyle = {
     borderColor: '#00e676'
-  };
-  
-  const rejectStyle = {
+};
+
+const rejectStyle = {
     borderColor: '#ff1744'
-  };
+};
 
 export const UploadFile = () => {
     const [uploadedFile, setUploadedFile] = useState<File | null>(null)
+    const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "success" | "error">("idle");
 
     const onDrop = async (files: File[]) => {
         const file = files[0]
         setUploadedFile(file)
-        
+        setUploadStatus("uploading");
+
         const formData = new FormData()
         formData.append('file', file)
-        
-        try {
-            const response = await songService.upload(formData)
 
-            console.log('response', response)
+        try {
+            await songService.upload(formData)
+            setUploadStatus("success");
         } catch (err) {
             console.error('Error uploading file', err)
+            setUploadStatus("error");
         }
     }
-    
+
     const {
         getRootProps,
         getInputProps,
@@ -57,33 +59,36 @@ export const UploadFile = () => {
         isFocused,
         isDragAccept,
         isDragReject
-      } = useDropzone({ onDrop });
-    
-      const style = useMemo(() => ({
+    } = useDropzone({ onDrop });
+
+    const style = useMemo(() => ({
         ...baseStyle,
         ...(isFocused ? focusedStyle : {}),
         ...(isDragAccept ? acceptStyle : {}),
         ...(isDragReject ? rejectStyle : {})
-      }), [
+    }), [
         isFocused,
         isDragAccept,
         isDragReject
-      ]);
-    
+    ]);
+
     return (
         <section className="upload-file">
             <div
-                {...getRootProps({style: style as React.CSSProperties})}
+                {...getRootProps({ style: style as React.CSSProperties })}
                 className={isDragActive ? "active" : ""}
             >
                 <input {...getInputProps()} />
-                {
-                    isDragActive ?
-                        <p>Drop the files here ...</p> :
-                        <p>Drag 'n' drop a file here, or click to select file</p>
-                }
+                {uploadStatus === "uploading" ? (
+                    <p>Uploading...</p>
+                ) : uploadStatus === "success" ? (
+                    <p>File uploaded successfully!</p>
+                ) : uploadStatus === "error" ? (
+                    <p>Error uploading file. Please try again.</p>
+                ) : (
+                    isDragActive ? <p>Drop the files here ...</p> : <p>Drag 'n' drop a file here, or click to select file</p>
+                )}
             </div>
-            {uploadedFile && <p className="uploaded-file">{uploadedFile.name}</p>}
         </section>
     )
 }
