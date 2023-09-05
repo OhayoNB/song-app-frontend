@@ -6,10 +6,10 @@ export const AppHeader = () => {
       <div className="layout-container">
         <div>Thing or Two.</div>
         <nav className="navbar">
-          <NavLink end to="/">
+          <NavLink end to="/upload">
             Upload file
           </NavLink>
-          <NavLink end to="/">
+          <NavLink end to="/song-list">
             Song List
           </NavLink>
         </nav>
