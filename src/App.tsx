@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './assets/styles/main.scss'
 import { AppHeader } from './components/AppHeader';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { UploadFile } from './components/UploadFile';
 import { SongList } from './components/SongList';
 
 function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate('/upload');
+  }, [navigate]);
+
   return (
     <div className="app">
       <AppHeader />
