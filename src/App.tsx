@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './assets/styles/main.scss'
 import { AppHeader } from './components/AppHeader';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { UploadFile } from './components/UploadFile';
 import { SongList } from './components/SongList';
 
