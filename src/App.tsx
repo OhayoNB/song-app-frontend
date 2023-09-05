@@ -6,11 +6,6 @@ import { UploadFile } from './components/UploadFile';
 import { SongList } from './components/SongList';
 
 function App() {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    navigate('/upload');
-  }, [navigate]);
 
   return (
     <div className="app">
