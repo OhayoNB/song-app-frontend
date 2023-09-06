@@ -18,7 +18,7 @@ export const SongList = () => {
     }, [])
 
     useEffect(() => {
-        const sortedSongs = songs.sort((a, b) => {
+        const sortedSongs = songs.slice().sort((a, b) => {
           if (sortOrder === 'asc') {
             return a.band.localeCompare(b.band);
           } else {
